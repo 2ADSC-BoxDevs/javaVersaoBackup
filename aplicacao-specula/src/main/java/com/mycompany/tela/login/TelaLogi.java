@@ -241,17 +241,18 @@ public class TelaLogi extends javax.swing.JFrame {
         Looca looca = new Looca();
         JdbcTemplate banco = conexao.getConnection();
         SlackAlert slack = new SlackAlert();
-
+        
+        
         String nomeUsuarioMaquina = inputEmail.getText();
         String identificacaoUsuario = inputSenha.getText();
-//      String insert = "Insert into userr values (null,?,?);";
+        Maquina maquinaId = banco.query("SELECT id_maquina FROM maquina", new BeanPropertyRowMapper<>(Maquina.class)).get(0);
+        Maquina maquina = new Maquina();
+        System.out.println(maquinaId);
+        System.out.println("AQUIIIIIIII" + maquinaId);
+        System.out.println("AQUIIIIIIIIIIIIIIIIIIII" + maquina);
 
-//      banco.update(insert, nomeUsuarioMaquina, identificacaoUsuario);
 //      List usuarios = banco.queryForList("SELECT * FROM userr;");
-//      System.out.println(usuarios);
-//Fazer validações dos dados das inputs, 
-//Returno de métricas para feedback instantaneo
-        List<UsuarioMaquina> usuarios = banco.query("SELECT * FROM usuario_maquina", new BeanPropertyRowMapper<>(UsuarioMaquina.class));
+        List<UsuarioMaquina> usuarios = banco.query("SELECT * FROM usuario_maquina ", new BeanPropertyRowMapper<>(UsuarioMaquina.class));
 
         Boolean userExiste = false;
 
@@ -298,7 +299,7 @@ public class TelaLogi extends javax.swing.JFrame {
             for (Disco disco : discos) {
                 System.out.println(disco);
                 System.out.println("------------------------------");
-                
+
                 txt.setText("Usuario encontrado, bem vindo! " + nomeUsuarioMaquina + "\n Sistema operacional: \n " + sistema);
 
             }
@@ -327,7 +328,7 @@ public class TelaLogi extends javax.swing.JFrame {
             new Timer().scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
-                    String insert = "Insert into historico_maquina values (null,1,?,?,?,?,now());";
+                    String insert = "Insert into historico_maquina values (null,3,?,?,?,?,now());";
 
                     banco.update(insert, sistema.getSistemaOperacional(), memoria.getEmUso(), memoria.getDisponivel(), processador.getUso());
                     System.out.println("Inserindo informações no banco");
