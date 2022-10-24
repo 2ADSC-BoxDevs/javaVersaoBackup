@@ -18,11 +18,11 @@ public class Conexao {
 
         dataSource​.setDriverClassName("com.mysql.cj.jdbc.Driver");
 
-        dataSource​.setUrl("jdbc:mysql://localhost/specula");
+        dataSource​.setUrl("jdbc:mysql://localhost/Specula");
 
         dataSource​.setUsername("root");
 
-        dataSource​.setPassword("#Gf53187038875");
+        dataSource​.setPassword("");
 
         this.connection = new JdbcTemplate(dataSource);
 
