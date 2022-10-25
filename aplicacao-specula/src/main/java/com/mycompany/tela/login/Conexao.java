@@ -18,7 +18,7 @@ public class Conexao {
 
         dataSource​.setDriverClassName("com.mysql.cj.jdbc.Driver");
 
-        dataSource​.setUrl("jdbc:mysql://localhost/Specula");
+        dataSource​.setUrl("jdbc: 35.175.175.49://localhost/Specula"); // MUDAR DE "MYSQL" PARA ENDEREÇO IP DO HOSTNAME DA MAQUINA VIRTUAL
 
         dataSource​.setUsername("root");
 
