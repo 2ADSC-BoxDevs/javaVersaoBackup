@@ -18,11 +18,11 @@ public class Conexao {
 
         dataSource​.setDriverClassName("com.mysql.cj.jdbc.Driver");
 
-        dataSource​.setUrl("jdbc: 35.175.175.49://localhost/Specula"); // MUDAR DE "MYSQL" PARA ENDEREÇO IP DO HOSTNAME DA MAQUINA VIRTUAL
+        dataSource​.setUrl("jdbc:mysql://0.0.0.0:3306/Specula?autoReconnect=true&useSSL=false"); // MUDAR DE "MYSQL" PARA ENDEREÇO IP DO HOSTNAME DA MAQUINA VIRTUAL
 
         dataSource​.setUsername("root");
 
-        dataSource​.setPassword("");
+        dataSource​.setPassword("urubu100");
 
         this.connection = new JdbcTemplate(dataSource);
 
