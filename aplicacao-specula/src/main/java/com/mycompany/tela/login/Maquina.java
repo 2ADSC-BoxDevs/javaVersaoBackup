@@ -19,9 +19,6 @@ public class Maquina {
      
     }
     
-    
-    
-
     public Integer getId_maquina() {
         return id_maquina;
     }

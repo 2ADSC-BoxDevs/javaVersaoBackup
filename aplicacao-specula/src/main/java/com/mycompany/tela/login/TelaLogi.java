@@ -238,23 +238,24 @@ public class TelaLogi extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         Conexao conexao = new Conexao();
-        Looca looca = new Looca();
         JdbcTemplate banco = conexao.getConnection();
+        Maquina maquina = new Maquina();
+        
+        Looca looca = new Looca();
+
         SlackAlert slack = new SlackAlert();
+
         
         
         String nomeUsuarioMaquina = inputEmail.getText();
         String identificacaoUsuario = inputSenha.getText();
-        Maquina maquinaId = banco.query("SELECT id_maquina FROM maquina", new BeanPropertyRowMapper<>(Maquina.class)).get(0);
-        Maquina maquina = new Maquina();
-        System.out.println(maquinaId);
-        System.out.println("AQUIIIIIIII" + maquinaId);
-        System.out.println("AQUIIIIIIIIIIIIIIIIIIII" + maquina);
+        
 
 //      List usuarios = banco.queryForList("SELECT * FROM userr;");
         List<UsuarioMaquina> usuarios = banco.query("SELECT * FROM usuario_maquina ", new BeanPropertyRowMapper<>(UsuarioMaquina.class));
 
         Boolean userExiste = false;
+        Integer idUsuario;
 
         for (UsuarioMaquina usuario : usuarios) {
 
@@ -262,9 +263,14 @@ public class TelaLogi extends javax.swing.JFrame {
             if (usuario.getNome_usuario_maquina().equals(nomeUsuarioMaquina) && usuario.getIdentificacao_usuario().equals(identificacaoUsuario)) {
 
                 System.out.println("\nUsuario existe\n");
-
                 System.out.println("Seja muito bem vindo a nossa aplicação " + nomeUsuarioMaquina + "!\n\nDados e métricas da maquina abaixo\n");
                 userExiste = true;
+                
+                
+                System.out.println("Id do usuario logado aqui");
+                System.out.println(usuario.getId_usuario_maquina());
+                idUsuario = usuario.getId_usuario_maquina();
+                
 
             } else {
 
@@ -274,27 +280,44 @@ public class TelaLogi extends javax.swing.JFrame {
         }
 
         if (userExiste == true) {
+            
+            
+            
+                List<Maquina> maquinas = banco.query("SELECT id_maquina FROM maquina" , new BeanPropertyRowMapper<>(Maquina.class));
+                System.out.println(maquinas);
 
-            Sistema sistema = looca.getSistema();
-            Processador processador = looca.getProcessador();
-            Memoria memoria = looca.getMemoria();
-            DiscosGroup grupoDeDiscos = looca.getGrupoDeDiscos();
-            Temperatura temperatura = looca.getTemperatura();
+                System.out.println("LIsta inteira" + maquinas);
 
-            System.out.println("--------------------");
-            System.out.println("Coletando dados do sistema");
-            System.out.println(sistema);
-            System.out.println("--------------------");
-            System.out.println(processador);
-            System.out.println("-------------------------");
-            System.out.println("Coletando dados da memoria");
-            System.out.println(memoria);
-            System.out.println("------------------------------");
-            System.out.println("Coletando dados da temperatura");
-            System.out.println(temperatura);
-            System.out.println("------------------------------");
-            System.out.println("Coletando dados de disco");
-            List<Disco> discos = grupoDeDiscos.getDiscos();
+                for(int i = 0; i < maquinas.size(); i++){
+
+
+                        System.out.println("Id de todas as maquinas aqui impressa aqui:");
+                        System.out.println(maquinas.get(i).getId_maquina());
+
+                }
+            
+            
+
+                Sistema sistema = looca.getSistema();
+                Processador processador = looca.getProcessador();
+                Memoria memoria = looca.getMemoria();
+                DiscosGroup grupoDeDiscos = looca.getGrupoDeDiscos();
+                Temperatura temperatura = looca.getTemperatura();
+
+                System.out.println("--------------------");
+                System.out.println("Coletando dados do sistema");
+                System.out.println(sistema);
+                System.out.println("--------------------");
+                System.out.println(processador);
+                System.out.println("-------------------------");
+                System.out.println("Coletando dados da memoria");
+                System.out.println(memoria);
+                System.out.println("------------------------------");
+                System.out.println("Coletando dados da temperatura");
+                System.out.println(temperatura);
+                System.out.println("------------------------------");
+                System.out.println("Coletando dados de disco");
+                List<Disco> discos = grupoDeDiscos.getDiscos();
 
             for (Disco disco : discos) {
                 System.out.println(disco);
