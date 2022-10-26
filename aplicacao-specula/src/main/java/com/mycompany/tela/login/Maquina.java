@@ -10,10 +10,7 @@ package com.mycompany.tela.login;
  */
 public class Maquina {
     private Integer id_maquina;
-
-    public Maquina(Integer id_maquina) {
-        this.id_maquina = id_maquina;
-    }
+    private Integer fk_usuario_maquina;
     
      public Maquina() {
      
@@ -27,15 +24,24 @@ public class Maquina {
         this.id_maquina = id_maquina;
     }
 
-  
-    @Override
-    public String toString() {
-        return String.format("%d", id_maquina); 
+    public Integer getFk_usuario_maquina() {
+        return fk_usuario_maquina;
     }
 
+    public void setFk_usuario_maquina(Integer fk_usuario_maquina) {
+        this.fk_usuario_maquina = fk_usuario_maquina;
+    }
 
+    @Override
+    public String toString() {
+        return "Maquina{" + "id_maquina=" + id_maquina + ", fk_usuario_maquina=" + fk_usuario_maquina + '}';
+    }
     
     
-    
-    
-}
+
+
+    }
+  
+
+
+   

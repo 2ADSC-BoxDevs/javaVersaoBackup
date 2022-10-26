@@ -12,6 +12,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -239,23 +240,17 @@ public class TelaLogi extends javax.swing.JFrame {
 
         Conexao conexao = new Conexao();
         JdbcTemplate banco = conexao.getConnection();
-        Maquina maquina = new Maquina();
-        
         Looca looca = new Looca();
-
         SlackAlert slack = new SlackAlert();
 
-        
-        
         String nomeUsuarioMaquina = inputEmail.getText();
         String identificacaoUsuario = inputSenha.getText();
-        
+
+        Boolean userExiste = false;
+        Integer idUser = 0;
 
 //      List usuarios = banco.queryForList("SELECT * FROM userr;");
         List<UsuarioMaquina> usuarios = banco.query("SELECT * FROM usuario_maquina ", new BeanPropertyRowMapper<>(UsuarioMaquina.class));
-
-        Boolean userExiste = false;
-        Integer idUsuario;
 
         for (UsuarioMaquina usuario : usuarios) {
 
@@ -265,12 +260,11 @@ public class TelaLogi extends javax.swing.JFrame {
                 System.out.println("\nUsuario existe\n");
                 System.out.println("Seja muito bem vindo a nossa aplicação " + nomeUsuarioMaquina + "!\n\nDados e métricas da maquina abaixo\n");
                 userExiste = true;
-                
-                
+
                 System.out.println("Id do usuario logado aqui");
                 System.out.println(usuario.getId_usuario_maquina());
-                idUsuario = usuario.getId_usuario_maquina();
-                
+
+                idUser = usuario.getId_usuario_maquina();
 
             } else {
 
@@ -279,45 +273,49 @@ public class TelaLogi extends javax.swing.JFrame {
 
         }
 
+        System.out.println("ID AQUIi " + idUser);
+
+        Maquina maquinaSave = new Maquina();
+
         if (userExiste == true) {
-            
-            
-            
-                List<Maquina> maquinas = banco.query("SELECT id_maquina FROM maquina" , new BeanPropertyRowMapper<>(Maquina.class));
-                System.out.println(maquinas);
 
-                System.out.println("LIsta inteira" + maquinas);
+            Integer fkMaquina = 0;
 
-                for(int i = 0; i < maquinas.size(); i++){
+            List<Maquina> maquinas = banco.query("SELECT *  FROM maquina", new BeanPropertyRowMapper<>(Maquina.class));
 
+            for (int i = 0; i < maquinas.size(); i++) {
 
-                        System.out.println("Id de todas as maquinas aqui impressa aqui:");
-                        System.out.println(maquinas.get(i).getId_maquina());
+                if (Objects.equals(maquinas.get(i).getFk_usuario_maquina(), idUser)) {
+                    fkMaquina = maquinas.get(i).getId_maquina();
 
+                } else {
                 }
-            
-            
 
-                Sistema sistema = looca.getSistema();
-                Processador processador = looca.getProcessador();
-                Memoria memoria = looca.getMemoria();
-                DiscosGroup grupoDeDiscos = looca.getGrupoDeDiscos();
-                Temperatura temperatura = looca.getTemperatura();
+            }
 
-                System.out.println("--------------------");
-                System.out.println("Coletando dados do sistema");
-                System.out.println(sistema);
-                System.out.println("--------------------");
-                System.out.println(processador);
-                System.out.println("-------------------------");
-                System.out.println("Coletando dados da memoria");
-                System.out.println(memoria);
-                System.out.println("------------------------------");
-                System.out.println("Coletando dados da temperatura");
-                System.out.println(temperatura);
-                System.out.println("------------------------------");
-                System.out.println("Coletando dados de disco");
-                List<Disco> discos = grupoDeDiscos.getDiscos();
+            maquinaSave.setId_maquina(fkMaquina);
+
+//            String fkMud = fkMaquina.toString();
+            Sistema sistema = looca.getSistema();
+            Processador processador = looca.getProcessador();
+            Memoria memoria = looca.getMemoria();
+            DiscosGroup grupoDeDiscos = looca.getGrupoDeDiscos();
+            Temperatura temperatura = looca.getTemperatura();
+
+            System.out.println("--------------------");
+            System.out.println("Coletando dados do sistema");
+            System.out.println(sistema);
+            System.out.println("--------------------");
+            System.out.println(processador);
+            System.out.println("-------------------------");
+            System.out.println("Coletando dados da memoria");
+            System.out.println(memoria);
+            System.out.println("------------------------------");
+            System.out.println("Coletando dados da temperatura");
+            System.out.println(temperatura);
+            System.out.println("------------------------------");
+            System.out.println("Coletando dados de disco");
+            List<Disco> discos = grupoDeDiscos.getDiscos();
 
             for (Disco disco : discos) {
                 System.out.println(disco);
@@ -326,6 +324,7 @@ public class TelaLogi extends javax.swing.JFrame {
                 txt.setText("Usuario encontrado, bem vindo! " + nomeUsuarioMaquina + "\n Sistema operacional: \n " + sistema);
 
             }
+
             new Timer().scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
@@ -351,9 +350,12 @@ public class TelaLogi extends javax.swing.JFrame {
             new Timer().scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
-                    String insert = "Insert into historico_maquina values (null,3,?,?,?,?,now());";
 
-                    banco.update(insert, sistema.getSistemaOperacional(), memoria.getEmUso(), memoria.getDisponivel(), processador.getUso());
+                    String insert = "Insert into historico_maquina values (null,?,?,?,?,?,now());";
+//                    String insert = String.format("INSERT INTO historico_maquina VALUES (null, %d, %s, %s, %s, %s, null)", maquinaSave.getId_maquina(), sistema.getSistemaOperacional(), memoria.getEmUso(), memoria.getDisponivel(), processador.getUso());
+
+                    banco.update(insert, maquinaSave.getId_maquina(), sistema.getSistemaOperacional(), memoria.getEmUso(), memoria.getDisponivel(), processador.getUso());
+
                     System.out.println("Inserindo informações no banco");
 
                 }
