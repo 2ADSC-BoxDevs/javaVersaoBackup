@@ -11,6 +11,7 @@ package com.mycompany.tela.login;
 public class Maquina {
     private Integer id_maquina;
     private Integer fk_usuario_maquina;
+    private String codigo_patrimonio;
     
      public Maquina() {
      
@@ -32,6 +33,14 @@ public class Maquina {
         this.fk_usuario_maquina = fk_usuario_maquina;
     }
 
+    public String getCodigo_patrimonio() {
+        return codigo_patrimonio;
+    }
+
+    public void setCodigo_patrimonio(String codigo_patrimonio) {
+        this.codigo_patrimonio = codigo_patrimonio;
+    }
+    
     @Override
     public String toString() {
         return "Maquina{" + "id_maquina=" + id_maquina + ", fk_usuario_maquina=" + fk_usuario_maquina + '}';

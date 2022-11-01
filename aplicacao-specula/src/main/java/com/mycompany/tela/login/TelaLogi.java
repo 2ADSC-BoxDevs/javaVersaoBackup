@@ -317,6 +317,7 @@ public class TelaLogi extends javax.swing.JFrame {
         }
 
         Maquina maquinaSave = new Maquina();
+        
         if (userExiste == true) {
 
             Integer fkMaquina = 0;
@@ -325,76 +326,101 @@ public class TelaLogi extends javax.swing.JFrame {
             for (int i = 0; i < maquinas.size(); i++) {
 
                 if (Objects.equals(maquinas.get(i).getFk_usuario_maquina(), idUser)) {
+
                     fkMaquina = maquinas.get(i).getId_maquina();
 
+                    maquinaSave.setId_maquina(fkMaquina);
+                    Sistema sistema = looca.getSistema();
+                    Processador processador = looca.getProcessador();
+                    Memoria memoria = looca.getMemoria();
+                    DiscosGroup grupoDeDiscos = looca.getGrupoDeDiscos();
+                    Temperatura temperatura = looca.getTemperatura();
+
+                    if (maquinas.get(i).getCodigo_patrimonio() != null) {
+
+                        System.out.println("Maquina já foi istanciada pela primeira vez!");
+
+                    } else {
+
+                        String insertMaquina = "UPDATE maquina SET isActivade = ?,codigo_patrimonio = ?,cpu_detalhe = ?,ram_detalhe = ?,disco_detalhe = ?  WHERE id_maquina = ?;";
+                        banco.update(insertMaquina, 1, processador.getId(), processador.getNome(), memoria.getTotal(), grupoDeDiscos.getQuantidadeDeDiscos(), maquinaSave.getId_maquina());
+
+                    }
                 }
 
             }
 
-            maquinaSave.setId_maquina(fkMaquina);
-            Sistema sistema = looca.getSistema();
-            Processador processador = looca.getProcessador();
-            Memoria memoria = looca.getMemoria();
-            DiscosGroup grupoDeDiscos = looca.getGrupoDeDiscos();
-            Temperatura temperatura = looca.getTemperatura();
+            if (idUser == fkMaquina) {
 
-            System.out.println("--------------------");
-            System.out.println("Coletando dados do sistema");
-            System.out.println(sistema);
-            System.out.println("--------------------");
-            System.out.println(processador);
-            System.out.println("-------------------------");
-            System.out.println("Coletando dados da memoria");
-            System.out.println(memoria);
-            System.out.println("------------------------------");
-            System.out.println("Coletando dados da temperatura");
-            System.out.println(temperatura);
-            System.out.println("------------------------------");
-            System.out.println("Coletando dados de disco");
-            List<Disco> discos = grupoDeDiscos.getDiscos();
+                maquinaSave.setId_maquina(fkMaquina);
+                Sistema sistema = looca.getSistema();
+                Processador processador = looca.getProcessador();
+                Memoria memoria = looca.getMemoria();
+                DiscosGroup grupoDeDiscos = looca.getGrupoDeDiscos();
+                Temperatura temperatura = looca.getTemperatura();
 
-            for (Disco disco : discos) {
-                System.out.println(disco);
+                System.out.println("--------------------");
+                System.out.println("Coletando dados do sistema");
+                System.out.println(sistema);
+                System.out.println("--------------------");
+                System.out.println(processador);
+                System.out.println("-------------------------");
+                System.out.println("Coletando dados da memoria");
+                System.out.println(memoria);
                 System.out.println("------------------------------");
+                System.out.println("Coletando dados da temperatura");
+                System.out.println(temperatura);
+                System.out.println("------------------------------");
+                System.out.println("Coletando dados de disco");
+                List<Disco> discos = grupoDeDiscos.getDiscos();
 
-                txt.setText("Usuario encontrado\n\nBem vindo! " + nomeUsuarioMaquina + "\n\n\nDados da sua máquina: \n\n" + sistema + "\n" + temperatura);
+                for (Disco disco : discos) {
+                    System.out.println(disco);
+                    System.out.println("------------------------------");
 
-            }
+                    txt.setText("Usuario encontrado\n\nBem vindo! " + nomeUsuarioMaquina + "\n\n\nDados da sua máquina: \n\n" + sistema + "\n" + temperatura);
 
-            new Timer().scheduleAtFixedRate(new TimerTask() {
-                @Override
-                public void run() {
-
-                    if (memoria.getEmUso() > 3.) {
-                        System.out.println("Uso da memoria muito alto");
-                        SlackAlert.sendMessageToSlack("Alerta! O uso da memoria esta muito alto, seu computador irá travar");
-
-                    }
-                    if (processador.getFrequencia() > 4) {
-                        System.out.println("Processador muito usado");
-                        SlackAlert.sendMessageToSlack("Alerta! O uso da processador esta muito alto, seu computador irá travar");
-
-                    }
-                    if (memoria.getDisponivel() > 2.5) {
-                        System.out.println("Quase zero de memoria");
-                        SlackAlert.sendMessageToSlack("Alerta! Resta pouca memoria, seu computador irá travar");
-                    }
                 }
-            }, 0, 10000);
+
+                new Timer().scheduleAtFixedRate(new TimerTask() {
+                    @Override
+                    public void run() {
+
+                        if (memoria.getEmUso() > 3.) {
+                            System.out.println("Uso da memoria muito alto");
+                            SlackAlert.sendMessageToSlack("Alerta! O uso da memoria esta muito alto, seu computador irá travar");
+
+                        }
+                        if (processador.getFrequencia() > 4) {
+                            System.out.println("Processador muito usado");
+                            SlackAlert.sendMessageToSlack("Alerta! O uso da processador esta muito alto, seu computador irá travar");
+
+                        }
+                        if (memoria.getDisponivel() > 2.5) {
+                            System.out.println("Quase zero de memoria");
+                            SlackAlert.sendMessageToSlack("Alerta! Resta pouca memoria, seu computador irá travar");
+                        }
+                    }
+                }, 0, 10000);
 
 //             função SetInterval
-            new Timer().scheduleAtFixedRate(new TimerTask() {
-                @Override
-                public void run() {
+                new Timer().scheduleAtFixedRate(new TimerTask() {
+                    @Override
+                    public void run() {
 
-                    String insert = "Insert into historico_maquina values (null,?,?,?,?,?,now());";
+                        String insert = "Insert into historico_maquina values (null,?,?,?,?,?,now());";
 
-                    banco.update(insert, maquinaSave.getId_maquina(), sistema.getSistemaOperacional(), memoria.getEmUso(), memoria.getDisponivel(), processador.getUso());
+                        banco.update(insert, maquinaSave.getId_maquina(), sistema.getSistemaOperacional(), memoria.getEmUso(), memoria.getDisponivel(), processador.getUso());
 
-                    System.out.println("Inserindo informações no banco");
+                        System.out.println("Inserindo informações no banco");
 
-                }
-            }, 0, 5000);
+                    }
+                }, 0, 5000);
+            } else {
+
+                txt.setText("Usuario não tem maquina. \nEntrar em contato com o suporte");
+
+            }
         } else {
 
             txt.setText("Usuario não encontrado");
