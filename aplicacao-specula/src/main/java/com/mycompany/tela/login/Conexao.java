@@ -1,4 +1,3 @@
-
 package com.mycompany.tela.login;
 
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -19,7 +18,6 @@ public class Conexao {
         dataSource​.setDriverClassName("com.mysql.cj.jdbc.Driver");
 
         // dataSource​.setUrl("jdbc:mysql://172.31.16.213:3306/specula"); Funcionando para local na VM
-        
         dataSource​.setUrl("jdbc:mysql://localhost:3306/specula");
 
         dataSource​.setUsername("root");

@@ -19,7 +19,7 @@ public class Loading extends javax.swing.JFrame {
      * Creates new form Loading
      */
     public Loading() {
-        
+
         try {
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
         } catch (ClassNotFoundException ex) {
@@ -31,7 +31,7 @@ public class Loading extends javax.swing.JFrame {
         } catch (UnsupportedLookAndFeelException ex) {
             Logger.getLogger(Loading.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         initComponents();
     }
 
@@ -141,30 +141,29 @@ public class Loading extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        
         Loading lc = new Loading();
-        
+
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 lc.setVisible(true);
             }
         });
-        
+
         try {
             for (int i = 0; i < 101; i += 3) {
                 Thread.sleep(60);
                 lc.progress.setValue(i);
-                lc.PerCount.setText(Integer.toString(i)+"%");
-                
+                lc.PerCount.setText(Integer.toString(i) + "%");
+
             }
         } catch (Exception e) {
         }
-        
+
         TelaLogi hm = new TelaLogi();
         lc.setVisible(false);
         hm.setVisible(true);
         lc.dispose();
-        
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

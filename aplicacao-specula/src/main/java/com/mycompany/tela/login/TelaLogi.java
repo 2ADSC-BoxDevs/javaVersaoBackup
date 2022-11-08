@@ -317,7 +317,7 @@ public class TelaLogi extends javax.swing.JFrame {
         }
 
         Maquina maquinaSave = new Maquina();
-        
+
         if (userExiste == true) {
 
             Integer fkMaquina = 0;
@@ -416,7 +416,7 @@ public class TelaLogi extends javax.swing.JFrame {
 
                     }
                 }, 0, 5000);
-                
+
             } else {
 
                 txt.setText("Usuario não tem maquina. \nEntrar em contato com o suporte");
