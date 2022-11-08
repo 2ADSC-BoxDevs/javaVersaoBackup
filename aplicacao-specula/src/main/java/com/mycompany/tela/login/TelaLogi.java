@@ -388,7 +388,7 @@ public class TelaLogi extends javax.swing.JFrame {
 
                         if (memoria.getEmUso() > 3.) {
                             System.out.println("Uso da memoria muito alto");
-                            SlackAlert.sendMessageToSlack("Alerta! O uso da memoria esta muito alto, seu computador irá travar");
+                            SlackAlert.sendMessageToSlack("Alerta! a maquina esta com o id" + processador.getId() + " do usuario " + nomeUsuarioMaquina + " Esta apresentando problemas na memoria.");
 
                         }
                         if (processador.getFrequencia() > 4) {
@@ -401,7 +401,7 @@ public class TelaLogi extends javax.swing.JFrame {
                             SlackAlert.sendMessageToSlack("Alerta! Resta pouca memoria, seu computador irá travar");
                         }
                     }
-                }, 0, 10000);
+                }, 0, 3000);
 
 //             função SetInterval
                 new Timer().scheduleAtFixedRate(new TimerTask() {
@@ -416,6 +416,7 @@ public class TelaLogi extends javax.swing.JFrame {
 
                     }
                 }, 0, 5000);
+                
             } else {
 
                 txt.setText("Usuario não tem maquina. \nEntrar em contato com o suporte");
