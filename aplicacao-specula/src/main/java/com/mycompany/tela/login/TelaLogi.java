@@ -292,7 +292,8 @@ public class TelaLogi extends javax.swing.JFrame {
         }.start();
 
         Conexao conexao = new Conexao();
-        JdbcTemplate banco = conexao.getConnection();
+        JdbcTemplate bancoLocal = conexao.getConnectionLocal();
+        JdbcTemplate bancoAzure = conexao.getConnectionNuvem();
         Looca looca = new Looca();
 
         String nomeUsuarioMaquina = inputEmail.getText();
@@ -300,7 +301,7 @@ public class TelaLogi extends javax.swing.JFrame {
 
         Boolean userExiste = false;
         Integer idUser = 0;
-        List<UsuarioMaquina> usuarios = banco.query("SELECT * FROM usuario_maquina ", new BeanPropertyRowMapper<>(UsuarioMaquina.class));
+        List<UsuarioMaquina> usuarios = bancoLocal.query("SELECT * FROM usuario_maquina ", new BeanPropertyRowMapper<>(UsuarioMaquina.class));
 
         for (UsuarioMaquina usuario : usuarios) {
 
@@ -321,7 +322,7 @@ public class TelaLogi extends javax.swing.JFrame {
         if (userExiste == true) {
 
             Integer fkMaquina = 0;
-            List<Maquina> maquinas = banco.query("SELECT *  FROM maquina", new BeanPropertyRowMapper<>(Maquina.class));
+            List<Maquina> maquinas = bancoLocal.query("SELECT *  FROM maquina", new BeanPropertyRowMapper<>(Maquina.class));
 
             for (int i = 0; i < maquinas.size(); i++) {
 
@@ -343,9 +344,10 @@ public class TelaLogi extends javax.swing.JFrame {
                     } else {
 
                         String insertMaquina = "UPDATE maquina SET isActivade = ?,codigo_patrimonio = ?,cpu_detalhe = ?,ram_detalhe = ?,disco_detalhe = ?  WHERE id_maquina = ?;";
-                        banco.update(insertMaquina, 1, processador.getId(), processador.getNome(), memoria.getTotal(), grupoDeDiscos.getQuantidadeDeDiscos(), maquinaSave.getId_maquina());
+                        bancoLocal.update(insertMaquina, 1, processador.getId(), processador.getNome(), memoria.getTotal(), grupoDeDiscos.getQuantidadeDeDiscos(), maquinaSave.getId_maquina());
 
                     }
+                    
                 }
 
             }
@@ -387,19 +389,20 @@ public class TelaLogi extends javax.swing.JFrame {
                     public void run() {
 
                         if (memoria.getEmUso() > 3.) {
-                            System.out.println("Uso da memoria muito alto");
+//                            System.out.println("Uso da memoria muito alto");
                             SlackAlert.sendMessageToSlack("Alerta! a maquina esta com o id" + processador.getId() + " do usuario " + nomeUsuarioMaquina + " Esta apresentando problemas na memoria.");
 
                         }
                         if (processador.getFrequencia() > 4) {
-                            System.out.println("Processador muito usado");
+//                            System.out.println("Processador muito usado");
                             SlackAlert.sendMessageToSlack("Alerta! O uso da processador esta muito alto, seu computador irá travar");
 
                         }
                         if (memoria.getDisponivel() > 2.5) {
-                            System.out.println("Quase zero de memoria");
+//                            System.out.println("Quase zero de memoria");
                             SlackAlert.sendMessageToSlack("Alerta! Resta pouca memoria, seu computador irá travar");
                         }
+                        System.out.println("Rodando");
                     }
                 }, 0, 3000);
 
@@ -408,11 +411,13 @@ public class TelaLogi extends javax.swing.JFrame {
                     @Override
                     public void run() {
 
-                        String insert = "Insert into historico_maquina values (null,?,?,?,?,?,now());";
+                        String insert = "Insert into historico_maquina values (null,?,?,?,?,?,now())";
+                        String insertAzure = "Insert into historico_maquina (sistema_operacional,memoria_em_uso,memoria_disponivel,processador_em_uso) values (?,?,?,?)";
 
-                        banco.update(insert, maquinaSave.getId_maquina(), sistema.getSistemaOperacional(), memoria.getEmUso(), memoria.getDisponivel(), processador.getUso());
-
-                        System.out.println("Inserindo informações no banco");
+                        bancoLocal.update(insert, maquinaSave.getId_maquina(), sistema.getSistemaOperacional(), memoria.getEmUso(), memoria.getDisponivel(), processador.getUso());
+                        System.out.println("Inserindo informações no banco local");
+                        bancoAzure.update(insertAzure, sistema.getSistemaOperacional(), memoria.getEmUso(), memoria.getDisponivel(), processador.getUso());
+                        System.out.println("Inserindo informações no banco na Nuvem");
 
                     }
                 }, 0, 5000);

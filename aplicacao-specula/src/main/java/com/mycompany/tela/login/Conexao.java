@@ -9,7 +9,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
  */
 public class Conexao {
 
-    private JdbcTemplate connection;
+    private JdbcTemplate connectionLocal;
+
+    private JdbcTemplate connectionNuvem;
 
     public Conexao() {
 
@@ -25,14 +27,30 @@ public class Conexao {
         // dataSource​.setPassword("urubu100");
         dataSource​.setPassword("#Gf53187038875");
 
-        this.connection = new JdbcTemplate(dataSource);
+        BasicDataSource dataSourceAzure = new BasicDataSource();
+
+        dataSourceAzure.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+
+        dataSourceAzure.setUrl("jdbc:sqlserver://specula.database.windows.net:1433;database=specula");
+
+        dataSourceAzure.setUsername("specula@specula");
+
+        dataSourceAzure.setPassword("#Gfgrupo3");
+
+        this.connectionNuvem = new JdbcTemplate(dataSourceAzure);
+
+        this.connectionLocal = new JdbcTemplate(dataSource);
 
     }
 
-    public JdbcTemplate getConnection() {
+    public JdbcTemplate getConnectionLocal() {
 
-        return connection;
+        return connectionLocal;
 
+    }
+
+    public JdbcTemplate getConnectionNuvem() {
+        return connectionNuvem;
     }
 
 }

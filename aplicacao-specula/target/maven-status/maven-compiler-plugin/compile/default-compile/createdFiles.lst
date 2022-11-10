@@ -6,6 +6,7 @@ com/mycompany/tela/login/TelaLogi$8.class
 com/mycompany/tela/login/TelaLogi$10.class
 com/mycompany/tela/login/SlackAlert.class
 com/mycompany/tela/login/TelaLogi$3.class
+com/mycompany/tela/login/JdbcTemplateAzure.class
 com/mycompany/tela/login/TelaLogi$7.class
 com/mycompany/tela/login/Usuario.class
 com/mycompany/tela/login/Loading$1.class
