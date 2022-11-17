@@ -18,6 +18,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import lombok.extern.slf4j.Slf4j;
@@ -335,25 +336,8 @@ public class TelaLogi extends javax.swing.JFrame {
                 if (Objects.equals(maquinas.get(i).getFk_usuario_maquina(), idUser)) {
 
                     fkMaquina = maquinas.get(i).getId_maquina();
-
                     maquinaSave.setId_maquina(fkMaquina);
-                    Sistema sistema = looca.getSistema();
-                    Processador processador = looca.getProcessador();
-                    Memoria memoria = looca.getMemoria();
-                    DiscosGroup grupoDeDiscos = looca.getGrupoDeDiscos();
-                    Temperatura temperatura = looca.getTemperatura();
 
-                    if (maquinas.get(i).getCodigo_patrimonio() != null) {
-
-                        System.out.println("Maquina já foi istanciada pela primeira vez!");
-
-                    } else {
-
-                        String insertMaquina = "UPDATE maquina SET isActivade = ?,codigo_patrimonio = ?,cpu_detalhe = ?,ram_detalhe = ?,disco_detalhe = ?  WHERE id_maquina = ?;";
-                        bancoLocal.update(insertMaquina, 1, processador.getId(), processador.getNome(), memoria.getTotal(), grupoDeDiscos.getQuantidadeDeDiscos(), maquinaSave.getId_maquina());
-
-                    }
-                    
                 }
 
             }
@@ -367,6 +351,7 @@ public class TelaLogi extends javax.swing.JFrame {
                 DiscosGroup grupoDeDiscos = looca.getGrupoDeDiscos();
                 Temperatura temperatura = looca.getTemperatura();
 
+                JOptionPane.showMessageDialog(this, "Usuário logou");
                 System.out.println("--------------------");
                 System.out.println("Coletando dados do sistema");
                 System.out.println(sistema);
@@ -430,9 +415,20 @@ public class TelaLogi extends javax.swing.JFrame {
 
             } else {
 
+<<<<<<< HEAD
                             Logs.escreverTexto("C:\\Users\\Victor\\Desktop\\Site-institucional\\testeArquivo.txt", "\n Falha no login!"
                + "\n Data e hora: ");
                 txt.setText("Usuario não tem maquina. \nEntrar em contato com o suporte");
+=======
+                Processador processador = looca.getProcessador();
+                Memoria memoria = looca.getMemoria();
+                DiscosGroup grupoDeDiscos = looca.getGrupoDeDiscos();
+
+                txt.setText("Usuario não tem maquina. \nCadastramos essa no banco  \nReinicie a aplicação");
+
+                String insertMaquina = "insert into maquina (fk_empresa,fk_usuario_maquina,isActivade,codigo_patrimonio,cpu_detalhe,ram_detalhe,disco_detalhe) values (1,?,1,?,?,?,?)";
+                bancoLocal.update(insertMaquina, idUser, processador.getNome(), memoria.getTotal(), grupoDeDiscos.getQuantidadeDeDiscos(), maquinaSave.getId_maquina());
+>>>>>>> c07fb2cab37f491233dea7eba36cb68a108fb020
 
             }
         } else {
