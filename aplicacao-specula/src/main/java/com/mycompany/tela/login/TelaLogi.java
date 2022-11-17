@@ -20,9 +20,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
+
+@Slf4j
 public class TelaLogi extends javax.swing.JFrame {
 
     public TelaLogi() {
@@ -310,11 +313,14 @@ public class TelaLogi extends javax.swing.JFrame {
 
                 userExiste = true;
 
+                Logs.escreverTexto("C:\\Users\\Victor\\Desktop\\Site-institucional\\testeArquivo.txt", "\n Login Realizado com Sucesso!"
+               + "\n Data e hora: ");
+                
                 System.out.println("\nUsuario existe\n");
                 System.out.println("Seja muito bem vindo a nossa aplicação " + nomeUsuarioMaquina + "!\n\nDados e métricas da maquina abaixo\n");
                 idUser = usuario.getId_usuario_maquina();
 
-            }
+     
         }
 
         Maquina maquinaSave = new Maquina();
@@ -424,6 +430,8 @@ public class TelaLogi extends javax.swing.JFrame {
 
             } else {
 
+                            Logs.escreverTexto("C:\\Users\\Victor\\Desktop\\Site-institucional\\testeArquivo.txt", "\n Falha no login!"
+               + "\n Data e hora: ");
                 txt.setText("Usuario não tem maquina. \nEntrar em contato com o suporte");
 
             }
