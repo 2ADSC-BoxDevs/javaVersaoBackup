@@ -329,25 +329,8 @@ public class TelaLogi extends javax.swing.JFrame {
                 if (Objects.equals(maquinas.get(i).getFk_usuario_maquina(), idUser)) {
 
                     fkMaquina = maquinas.get(i).getId_maquina();
-
                     maquinaSave.setId_maquina(fkMaquina);
-                    Sistema sistema = looca.getSistema();
-                    Processador processador = looca.getProcessador();
-                    Memoria memoria = looca.getMemoria();
-                    DiscosGroup grupoDeDiscos = looca.getGrupoDeDiscos();
-                    Temperatura temperatura = looca.getTemperatura();
 
-                    if (maquinas.get(i).getCodigo_patrimonio() != null) {
-
-                        System.out.println("Maquina já foi istanciada pela primeira vez!");
-
-                    } else {
-
-                        String insertMaquina = "UPDATE maquina SET isActivade = ?,codigo_patrimonio = ?,cpu_detalhe = ?,ram_detalhe = ?,disco_detalhe = ?  WHERE id_maquina = ?;";
-                        bancoLocal.update(insertMaquina, 1, processador.getId(), processador.getNome(), memoria.getTotal(), grupoDeDiscos.getQuantidadeDeDiscos(), maquinaSave.getId_maquina());
-
-                    }
-                    
                 }
 
             }
@@ -424,7 +407,14 @@ public class TelaLogi extends javax.swing.JFrame {
 
             } else {
 
-                txt.setText("Usuario não tem maquina. \nEntrar em contato com o suporte");
+                Processador processador = looca.getProcessador();
+                Memoria memoria = looca.getMemoria();
+                DiscosGroup grupoDeDiscos = looca.getGrupoDeDiscos();
+
+                txt.setText("Usuario não tem maquina. \nCadastramos essa no banco  \nReinicie a aplicação");
+
+                String insertMaquina = "insert into maquina (fk_empresa,fk_usuario_maquina,isActivade,codigo_patrimonio,cpu_detalhe,ram_detalhe,disco_detalhe) values (1,?,1,?,?,?,?)";
+                bancoLocal.update(insertMaquina, idUser, processador.getNome(), memoria.getTotal(), grupoDeDiscos.getQuantidadeDeDiscos(), maquinaSave.getId_maquina());
 
             }
         } else {
