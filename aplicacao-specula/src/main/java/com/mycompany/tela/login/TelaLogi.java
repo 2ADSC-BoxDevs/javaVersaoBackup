@@ -18,6 +18,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -344,6 +345,7 @@ public class TelaLogi extends javax.swing.JFrame {
                 DiscosGroup grupoDeDiscos = looca.getGrupoDeDiscos();
                 Temperatura temperatura = looca.getTemperatura();
 
+                JOptionPane.showMessageDialog(this, "Usuário logou");
                 System.out.println("--------------------");
                 System.out.println("Coletando dados do sistema");
                 System.out.println(sistema);
