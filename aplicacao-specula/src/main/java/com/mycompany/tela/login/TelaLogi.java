@@ -21,12 +21,9 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
-
-@Slf4j
 public class TelaLogi extends javax.swing.JFrame {
 
     public TelaLogi() {
@@ -59,8 +56,6 @@ public class TelaLogi extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txt = new javax.swing.JTextArea();
         PerCount = new javax.swing.JLabel();
         progress = new javax.swing.JProgressBar();
 
@@ -139,12 +134,6 @@ public class TelaLogi extends javax.swing.JFrame {
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/imglogin.png"))); // NOI18N
 
-        txt.setBackground(new java.awt.Color(39, 41, 50));
-        txt.setColumns(20);
-        txt.setForeground(new java.awt.Color(255, 255, 255));
-        txt.setRows(5);
-        jScrollPane1.setViewportView(txt);
-
         PerCount.setBackground(new java.awt.Color(255, 255, 255));
         PerCount.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         PerCount.setForeground(new java.awt.Color(255, 255, 255));
@@ -170,7 +159,7 @@ public class TelaLogi extends javax.swing.JFrame {
                             .addComponent(jLabel3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap(157, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel1)
@@ -178,9 +167,6 @@ public class TelaLogi extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(110, 110, 110))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(92, 92, 92))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(progress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(145, 145, 145))
@@ -210,13 +196,11 @@ public class TelaLogi extends javax.swing.JFrame {
                         .addGap(13, 13, 13)
                         .addComponent(progress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(PerCount)
-                        .addGap(24, 24, 24)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(PerCount))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(98, 98, 98)
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 537, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addContainerGap(180, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -309,137 +293,123 @@ public class TelaLogi extends javax.swing.JFrame {
 
         for (UsuarioMaquina usuario : usuarios) {
 
-            //// Filtro Abaixo
+        
             if (usuario.getNome_usuario_maquina().equals(nomeUsuarioMaquina) && usuario.getIdentificacao_usuario().equals(identificacaoUsuario)) {
 
                 userExiste = true;
 
-                Logs.escreverTexto("C:\\Users\\Victor\\Desktop\\Site-institucional\\testeArquivo.txt", "\n Login Realizado com Sucesso!"
-               + "\n Data e hora: ");
-                
-                System.out.println("\nUsuario existe\n");
+                Logs.escreverTexto("/home/kauan.mendes/Área de Trabalho/ProjetoPI/javaCurrentVersion/testeArquivo", "\n Login Realizado com Sucesso!"
+                        + "\n Data e hora: ");
+
                 System.out.println("Seja muito bem vindo a nossa aplicação " + nomeUsuarioMaquina + "!\n\nDados e métricas da maquina abaixo\n");
                 idUser = usuario.getId_usuario_maquina();
 
-     
-        }
-
-        Maquina maquinaSave = new Maquina();
-
-        if (userExiste == true) {
-
-            Integer fkMaquina = 0;
-            List<Maquina> maquinas = bancoLocal.query("SELECT *  FROM maquina", new BeanPropertyRowMapper<>(Maquina.class));
-
-            for (int i = 0; i < maquinas.size(); i++) {
-
-                if (Objects.equals(maquinas.get(i).getFk_usuario_maquina(), idUser)) {
-
-                    fkMaquina = maquinas.get(i).getId_maquina();
-                    maquinaSave.setId_maquina(fkMaquina);
-
-                }
-
             }
 
-            if (idUser == fkMaquina) {
+            Maquina maquinaSave = new Maquina();
 
-                maquinaSave.setId_maquina(fkMaquina);
-                Sistema sistema = looca.getSistema();
-                Processador processador = looca.getProcessador();
-                Memoria memoria = looca.getMemoria();
-                DiscosGroup grupoDeDiscos = looca.getGrupoDeDiscos();
-                Temperatura temperatura = looca.getTemperatura();
+            if (userExiste == true) {
 
-                JOptionPane.showMessageDialog(this, "Usuário logou");
-                System.out.println("--------------------");
-                System.out.println("Coletando dados do sistema");
-                System.out.println(sistema);
-                System.out.println("--------------------");
-                System.out.println(processador);
-                System.out.println("-------------------------");
-                System.out.println("Coletando dados da memoria");
-                System.out.println(memoria);
-                System.out.println("------------------------------");
-                System.out.println("Coletando dados da temperatura");
-                System.out.println(temperatura);
-                System.out.println("------------------------------");
-                System.out.println("Coletando dados de disco");
-                List<Disco> discos = grupoDeDiscos.getDiscos();
+                Integer fkMaquina = 0;
+                List<Maquina> maquinas = bancoLocal.query("SELECT *  FROM maquina", new BeanPropertyRowMapper<>(Maquina.class));
 
-                for (Disco disco : discos) {
-                    System.out.println(disco);
-                    System.out.println("------------------------------");
+                for (int i = 0; i < maquinas.size(); i++) {
 
-                    txt.setText("Usuario encontrado\n\nBem vindo! " + nomeUsuarioMaquina + "\n\n\nDados da sua máquina: \n\n" + sistema + "\n" + temperatura);
+                    if (Objects.equals(maquinas.get(i).getFk_usuario_maquina(), idUser)) {
+
+                        fkMaquina = maquinas.get(i).getId_maquina();
+                        maquinaSave.setId_maquina(fkMaquina);
+
+                    }
 
                 }
 
-                new Timer().scheduleAtFixedRate(new TimerTask() {
-                    @Override
-                    public void run() {
+                if (Objects.equals(idUser, fkMaquina)) {
 
-                        if (memoria.getEmUso() > 3.) {
+                    maquinaSave.setId_maquina(fkMaquina);
+                    Sistema sistema = looca.getSistema();
+                    Processador processador = looca.getProcessador();
+                    Memoria memoria = looca.getMemoria();
+                    DiscosGroup grupoDeDiscos = looca.getGrupoDeDiscos();
+
+                    JOptionPane.showMessageDialog(null, "Usuário logou\nBem vindo! " + nomeUsuarioMaquina);
+//                    System.out.println("--------------------");
+//                    System.out.println("Coletando dados do sistema");
+//                    System.out.println(sistema);
+//                    System.out.println("--------------------");
+//                    System.out.println(processador);
+//                    System.out.println("-------------------------");
+//                    System.out.println("Coletando dados da memoria");
+//                    System.out.println(memoria);
+//                    System.out.println("------------------------------");
+//                    System.out.println("Coletando dados da temperatura");
+//                    System.out.println(temperatura);
+//                    System.out.println("------------------------------");
+//                    System.out.println("Coletando dados de disco");
+                    new Timer().scheduleAtFixedRate(new TimerTask() {
+                        @Override
+                        public void run() {
+
+                            if (memoria.getEmUso() > 3.) {
 //                            System.out.println("Uso da memoria muito alto");
-                            SlackAlert.sendMessageToSlack("Alerta! a maquina esta com o id" + processador.getId() + " do usuario " + nomeUsuarioMaquina + " Esta apresentando problemas na memoria.");
+                                SlackAlert.sendMessageToSlack("Alerta! a maquina esta com o id" + processador.getId() + " do usuario " + nomeUsuarioMaquina + " Esta apresentando problemas na memoria.");
 
-                        }
-                        if (processador.getFrequencia() > 4) {
+                            }
+                            if (processador.getFrequencia() > 4) {
 //                            System.out.println("Processador muito usado");
-                            SlackAlert.sendMessageToSlack("Alerta! O uso da processador esta muito alto, seu computador irá travar");
+                                SlackAlert.sendMessageToSlack("Alerta! O uso da processador esta muito alto, seu computador irá travar");
+
+                            }
+                            if (memoria.getDisponivel() > 2.5) {
+//                            System.out.println("Quase zero de memoria");
+                                SlackAlert.sendMessageToSlack("Alerta! Resta pouca memoria, seu computador irá travar");
+                            }
 
                         }
-                        if (memoria.getDisponivel() > 2.5) {
-//                            System.out.println("Quase zero de memoria");
-                            SlackAlert.sendMessageToSlack("Alerta! Resta pouca memoria, seu computador irá travar");
-                        }
-                        System.out.println("Rodando");
-                    }
-                }, 0, 3000);
+                    }, 0, 3000);
 
 //             função SetInterval
-                new Timer().scheduleAtFixedRate(new TimerTask() {
-                    @Override
-                    public void run() {
+                    new Timer().scheduleAtFixedRate(new TimerTask() {
+                        @Override
+                        public void run() {
 
-                        String insert = "Insert into historico_maquina values (null,?,?,?,?,?,now())";
-                        String insertAzure = "Insert into historico_maquina (sistema_operacional,memoria_em_uso,memoria_disponivel,processador_em_uso) values (?,?,?,?)";
+                            String insert = "Insert into historico_maquina values (null,?,?,?,?,?,now())";
+                            String insertAzure = "Insert into historico_maquina (sistema_operacional,memoria_em_uso,memoria_disponivel,processador_em_uso) values (?,?,?,?)";
 
-                        bancoLocal.update(insert, maquinaSave.getId_maquina(), sistema.getSistemaOperacional(), memoria.getEmUso(), memoria.getDisponivel(), processador.getUso());
-                        System.out.println("Inserindo informações no banco local");
-                        bancoAzure.update(insertAzure, sistema.getSistemaOperacional(), memoria.getEmUso(), memoria.getDisponivel(), processador.getUso());
-                        System.out.println("Inserindo informações no banco na Nuvem");
+                            bancoLocal.update(insert, maquinaSave.getId_maquina(), sistema.getSistemaOperacional(), memoria.getEmUso(), memoria.getDisponivel(), processador.getUso());
+                            System.out.println("Inserindo informações no banco local");
+                            bancoAzure.update(insertAzure, sistema.getSistemaOperacional(), memoria.getEmUso(), memoria.getDisponivel(), processador.getUso());
+                            System.out.println("Inserindo informações no banco na Nuvem");
 
-                    }
-                }, 0, 5000);
+                        }
+                    }, 0, 5000);
 
-            } else {
+                } else {
 
-<<<<<<< HEAD
-                            Logs.escreverTexto("C:\\Users\\Victor\\Desktop\\Site-institucional\\testeArquivo.txt", "\n Falha no login!"
-               + "\n Data e hora: ");
-                txt.setText("Usuario não tem maquina. \nEntrar em contato com o suporte");
-=======
-                Processador processador = looca.getProcessador();
-                Memoria memoria = looca.getMemoria();
-                DiscosGroup grupoDeDiscos = looca.getGrupoDeDiscos();
+                    Logs.escreverTexto("/home/kauan.mendes/Área de Trabalho/ProjetoPI/javaCurrentVersion/testeArquivo", "\n Falha no login!"
+                            + "\n Data e hora: ");
+                    Processador processador = looca.getProcessador();
+                    Memoria memoria = looca.getMemoria();
+                    DiscosGroup grupoDeDiscos = looca.getGrupoDeDiscos();
+                    JOptionPane.showMessageDialog(this, "Usuario não tem maquina. \n Cadastramos essa no banco  \nAperte no botão novamente para rodar.");
 
-                txt.setText("Usuario não tem maquina. \nCadastramos essa no banco  \nReinicie a aplicação");
+                    String insertMaquina = "insert into maquina (fk_empresa,fk_usuario_maquina,isActivade,codigo_patrimonio,cpu_detalhe,ram_detalhe,disco_detalhe) values (1,?,?,?,?,?,?)";
+                    bancoLocal.update(insertMaquina, idUser, "ativo", processador.getId(), processador.getNumeroCpusFisicas(), memoria.getTotal(), grupoDeDiscos.getTamanhoTotal());
 
-                String insertMaquina = "insert into maquina (fk_empresa,fk_usuario_maquina,isActivade,codigo_patrimonio,cpu_detalhe,ram_detalhe,disco_detalhe) values (1,?,1,?,?,?,?)";
-                bancoLocal.update(insertMaquina, idUser, processador.getNome(), memoria.getTotal(), grupoDeDiscos.getQuantidadeDeDiscos(), maquinaSave.getId_maquina());
->>>>>>> c07fb2cab37f491233dea7eba36cb68a108fb020
+                    String insertAzure = "Insert into maquina (fk_empresa,fk_usuario_maquina, isActivade,codigo_patrimonio,cpu_detalhe,ram_detalhe,disco_detalhe) values (1,1,?,?,?,?,?)";
+                    bancoAzure.update(insertAzure, "ativo", processador.getId(), processador.getNumeroCpusFisicas(), memoria.getTotal(), grupoDeDiscos.getTamanhoTotal());
 
+                }
+            } 
+            else {
+
+                JOptionPane.showMessageDialog(this, "Usuário não encontrado\nVerifique seus dados e tente novamente ");
             }
-        } else {
-
-            txt.setText("Usuario não encontrado");
-
-        }
 
 
     }//GEN-LAST:event_btnLoginActionPerformed
 
+    }
 
     private void btnLoginMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoginMouseEntered
         btnLogin.setBackground(new java.awt.Color(39, 41, 50));
@@ -494,8 +464,6 @@ public class TelaLogi extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JProgressBar progress;
-    private javax.swing.JTextArea txt;
     // End of variables declaration//GEN-END:variables
 }
