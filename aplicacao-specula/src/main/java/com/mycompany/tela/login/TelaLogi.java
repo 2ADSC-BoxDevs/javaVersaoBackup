@@ -314,9 +314,7 @@ public class TelaLogi extends javax.swing.JFrame {
 
                 userExiste = true;
 
-                Logs.escreverTexto("C:\\Users\\Victor\\Desktop\\Site-institucional\\testeArquivo.txt", "\n Login Realizado com Sucesso!"
-               + "\n Data e hora: ");
-                
+
                 System.out.println("\nUsuario existe\n");
                 System.out.println("Seja muito bem vindo a nossa aplicação " + nomeUsuarioMaquina + "!\n\nDados e métricas da maquina abaixo\n");
                 idUser = usuario.getId_usuario_maquina();
@@ -343,7 +341,9 @@ public class TelaLogi extends javax.swing.JFrame {
             }
 
             if (idUser == fkMaquina) {
-
+                Logs.escreverTexto("C:\\Users\\Victor\\Desktop\\Site-institucional\\testeArquivo.txt", "\n Login Realizado com Sucesso!"
+               + "\n Data e hora: ");
+                
                 maquinaSave.setId_maquina(fkMaquina);
                 Sistema sistema = looca.getSistema();
                 Processador processador = looca.getProcessador();
@@ -415,11 +415,9 @@ public class TelaLogi extends javax.swing.JFrame {
 
             } else {
 
-<<<<<<< HEAD
-                            Logs.escreverTexto("C:\\Users\\Victor\\Desktop\\Site-institucional\\testeArquivo.txt", "\n Falha no login!"
+                   Logs.escreverTexto("C:\\Users\\Victor\\Desktop\\Site-institucional\\testeArquivo.txt", "\n Falha no login!"
                + "\n Data e hora: ");
                 txt.setText("Usuario não tem maquina. \nEntrar em contato com o suporte");
-=======
                 Processador processador = looca.getProcessador();
                 Memoria memoria = looca.getMemoria();
                 DiscosGroup grupoDeDiscos = looca.getGrupoDeDiscos();
@@ -428,7 +426,6 @@ public class TelaLogi extends javax.swing.JFrame {
 
                 String insertMaquina = "insert into maquina (fk_empresa,fk_usuario_maquina,isActivade,codigo_patrimonio,cpu_detalhe,ram_detalhe,disco_detalhe) values (1,?,1,?,?,?,?)";
                 bancoLocal.update(insertMaquina, idUser, processador.getNome(), memoria.getTotal(), grupoDeDiscos.getQuantidadeDeDiscos(), maquinaSave.getId_maquina());
->>>>>>> c07fb2cab37f491233dea7eba36cb68a108fb020
 
             }
         } else {
@@ -440,7 +437,7 @@ public class TelaLogi extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnLoginActionPerformed
 
-
+    }
     private void btnLoginMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoginMouseEntered
         btnLogin.setBackground(new java.awt.Color(39, 41, 50));
     }//GEN-LAST:event_btnLoginMouseEntered
