@@ -339,35 +339,23 @@ public class TelaLogi extends javax.swing.JFrame {
                 DiscosGroup grupoDeDiscos = looca.getGrupoDeDiscos();
 
                 JOptionPane.showMessageDialog(null, "Usuário logou\nBem vindo! " + nomeUsuarioMaquina);
-//                    System.out.println("--------------------");
-//                    System.out.println("Coletando dados do sistema");
-//                    System.out.println(sistema);
-//                    System.out.println("--------------------");
-//                    System.out.println(processador);
-//                    System.out.println("-------------------------");
-//                    System.out.println("Coletando dados da memoria");
-//                    System.out.println(memoria);
-//                    System.out.println("------------------------------");
-//                    System.out.println("Coletando dados da temperatura");
-//                    System.out.println(temperatura);
-//                    System.out.println("------------------------------");
-//                    System.out.println("Coletando dados de disco");
+
                 new Timer().scheduleAtFixedRate(new TimerTask() {
                     @Override
                     public void run() {
 
                         if (memoria.getEmUso() > 3) {
-//                            System.out.println("Uso da memoria muito alto");
+
                             SlackAlert.sendMessageToSlack("Alerta! a maquina esta com o id" + processador.getId() + " do usuario " + nomeUsuarioMaquina + " Esta apresentando problemas na memoria.");
 
                         }
                         if (processador.getFrequencia() > 4) {
-//                            System.out.println("Processador muito usado");
+
                             SlackAlert.sendMessageToSlack("Alerta! O uso da processador esta muito alto, seu computador irá travar");
 
                         }
                         if (memoria.getDisponivel() > 2.5) {
-//                            System.out.println("Quase zero de memoria");
+
                             SlackAlert.sendMessageToSlack("Alerta! Resta pouca memoria, seu computador irá travar");
                         }
 
@@ -380,12 +368,11 @@ public class TelaLogi extends javax.swing.JFrame {
                     public void run() {
 
                         String insert = "Insert into historico_maquina values (null,?,?,?,?,?,now())";
-                        String insertAzure = "Insert into historico_maquina (sistema_operacional,memoria_em_uso,memoria_disponivel,processador_em_uso) values (?,?,?,?)";
-
                         bancoLocal.update(insert, maquinaSave.getId_maquina(), sistema.getSistemaOperacional(), memoria.getEmUso(), memoria.getDisponivel(), processador.getUso());
                         System.out.println("Inserindo informações no banco local");
 
-                        bancoAzure.update(insertAzure, sistema.getSistemaOperacional(), memoria.getEmUso(), memoria.getDisponivel(), processador.getUso());
+                        String insertAzure = "Insert into historico_maquina (fk_maquina,sistema_operacional,memoria_em_uso,memoria_disponivel,processador_em_uso) values (?,?,?,?,?)";
+                        bancoAzure.update(insertAzure, maquinaSave.getId_maquina(), sistema.getSistemaOperacional(), memoria.getEmUso(), memoria.getDisponivel(), processador.getUso());
                         System.out.println("Inserindo informações no banco na Nuvem");
 
                     }
@@ -393,8 +380,7 @@ public class TelaLogi extends javax.swing.JFrame {
 
             } else {
 
-                Logs.escreverTexto("/home/kauan.mendes/Área de Trabalho/ProjetoPI/javaCurrentVersion/testeArquivo", "\n Falha no login!"
-                        + "\n Data e hora: ");
+                Logs.escreverTexto("/home/kauan.mendes/Área de Trabalho/ProjetoPI/javaCurrentVersion/testeArquivo", "\n Falha no login!" + "\n Data e hora: ");
                 Processador processador = looca.getProcessador();
                 Memoria memoria = looca.getMemoria();
                 DiscosGroup grupoDeDiscos = looca.getGrupoDeDiscos();
