@@ -371,9 +371,9 @@ public class TelaLogi extends javax.swing.JFrame {
                         bancoLocal.update(insert, maquinaSave.getId_maquina(), sistema.getSistemaOperacional(), memoria.getEmUso(), memoria.getDisponivel(), processador.getUso());
                         System.out.println("Inserindo informações no banco local");
 
-                        String insertAzure = "Insert into historico_maquina (fk_maquina,sistema_operacional,memoria_em_uso,memoria_disponivel,processador_em_uso) values (?,?,?,?,?)";
-                        bancoAzure.update(insertAzure, maquinaSave.getId_maquina(), sistema.getSistemaOperacional(), memoria.getEmUso(), memoria.getDisponivel(), processador.getUso());
-                        System.out.println("Inserindo informações no banco na Nuvem");
+//                        String insertAzure = "Insert into historico_maquina (fk_maquina,sistema_operacional,memoria_em_uso,memoria_disponivel,processador_em_uso) values (?,?,?,?,?)";
+//                        bancoAzure.update(insertAzure, maquinaSave.getId_maquina(), sistema.getSistemaOperacional(), memoria.getEmUso(), memoria.getDisponivel(), processador.getUso());
+//                        System.out.println("Inserindo informações no banco na Nuvem");
 
                     }
                 }, 0, 6000);
@@ -389,8 +389,8 @@ public class TelaLogi extends javax.swing.JFrame {
                 String insertMaquina = "insert into maquina (fk_empresa,fk_usuario_maquina,isActivade,codigo_patrimonio,cpu_detalhe,ram_detalhe,disco_detalhe) values (1,?,?,?,?,?,?)";
                 bancoLocal.update(insertMaquina, idUser, "ativo", processador.getId(), processador.getNumeroCpusFisicas(), memoria.getTotal(), grupoDeDiscos.getTamanhoTotal());
 
-                String insertAzure = "Insert into maquina (fk_empresa,fk_usuario_maquina, isActivade,codigo_patrimonio,cpu_detalhe,ram_detalhe,disco_detalhe) values (1,1,?,?,?,?,?)";
-                bancoAzure.update(insertAzure, "ativo", processador.getId(), processador.getNumeroCpusFisicas(), memoria.getTotal(), grupoDeDiscos.getTamanhoTotal());
+//                String insertAzure = "Insert into maquina (fk_empresa,fk_usuario_maquina, isActivade,codigo_patrimonio,cpu_detalhe,ram_detalhe,disco_detalhe) values (1,1,?,?,?,?,?)";
+//                bancoAzure.update(insertAzure, "ativo", processador.getId(), processador.getNumeroCpusFisicas(), memoria.getTotal(), grupoDeDiscos.getTamanhoTotal());
 
             }
         } else {
