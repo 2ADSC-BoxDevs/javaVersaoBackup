@@ -1,4 +1,4 @@
-package com.mycompany.tela.login;
+package banco;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -25,7 +25,7 @@ public class Conexao {
         dataSource​.setUsername("root");
 
         // dataSource​.setPassword("urubu100");
-        dataSource​.setPassword("Spitfire@44");
+        dataSource​.setPassword("#Gf53187038875");
 
         BasicDataSource dataSourceAzure = new BasicDataSource();
 

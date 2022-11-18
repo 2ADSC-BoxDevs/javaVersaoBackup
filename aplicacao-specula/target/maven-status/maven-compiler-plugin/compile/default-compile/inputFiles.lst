@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 C:\Users\Victor\Desktop\Site-institucional\Java\javaCurrentVersion\aplicacao-specula\src\main\java\com\mycompany\tela\login\Maquina.java
 C:\Users\Victor\Desktop\Site-institucional\Java\javaCurrentVersion\aplicacao-specula\src\main\java\com\mycompany\tela\login\Loading.java
 C:\Users\Victor\Desktop\Site-institucional\Java\javaCurrentVersion\aplicacao-specula\src\main\java\com\mycompany\tela\login\UsuarioMaquina.java
@@ -5,3 +6,12 @@ C:\Users\Victor\Desktop\Site-institucional\Java\javaCurrentVersion\aplicacao-spe
 C:\Users\Victor\Desktop\Site-institucional\Java\javaCurrentVersion\aplicacao-specula\src\main\java\com\mycompany\tela\login\SlackAlert.java
 C:\Users\Victor\Desktop\Site-institucional\Java\javaCurrentVersion\aplicacao-specula\src\main\java\com\mycompany\tela\login\Logs.java
 C:\Users\Victor\Desktop\Site-institucional\Java\javaCurrentVersion\aplicacao-specula\src\main\java\com\mycompany\tela\login\TelaLogi.java
+=======
+/home/kauan.mendes/Área de Trabalho/ProjetoPI/javaCurrentVersion/aplicacao-specula/src/main/java/com/mycompany/tela/login/Loading.java
+/home/kauan.mendes/Área de Trabalho/ProjetoPI/javaCurrentVersion/aplicacao-specula/src/main/java/com/mycompany/tela/login/UsuarioMaquina.java
+/home/kauan.mendes/Área de Trabalho/ProjetoPI/javaCurrentVersion/aplicacao-specula/src/main/java/com/mycompany/tela/login/Conexao.java
+/home/kauan.mendes/Área de Trabalho/ProjetoPI/javaCurrentVersion/aplicacao-specula/src/main/java/com/mycompany/tela/login/Maquina.java
+/home/kauan.mendes/Área de Trabalho/ProjetoPI/javaCurrentVersion/aplicacao-specula/src/main/java/com/mycompany/tela/login/Logs.java
+/home/kauan.mendes/Área de Trabalho/ProjetoPI/javaCurrentVersion/aplicacao-specula/src/main/java/com/mycompany/tela/login/TelaLogi.java
+/home/kauan.mendes/Área de Trabalho/ProjetoPI/javaCurrentVersion/aplicacao-specula/src/main/java/com/mycompany/tela/login/SlackAlert.java
+>>>>>>> 54d4bc26d659b199a58c6871295e158dd41837ce
