@@ -1,5 +1,6 @@
-package com.mycompany.tela.login;
+package aplicacao;
 
+import alerta.SlackAlert;
 import com.github.britooo.looca.api.core.Looca;
 import com.github.britooo.looca.api.group.discos.Disco;
 import com.github.britooo.looca.api.group.discos.DiscosGroup;
@@ -7,6 +8,10 @@ import com.github.britooo.looca.api.group.memoria.Memoria;
 import com.github.britooo.looca.api.group.processador.Processador;
 import com.github.britooo.looca.api.group.sistema.Sistema;
 import com.github.britooo.looca.api.group.temperatura.Temperatura;
+import banco.Conexao;
+import log.Logs;
+import banco.Maquina;
+import banco.UsuarioMaquina;
 
 import static java.lang.Thread.sleep;
 
