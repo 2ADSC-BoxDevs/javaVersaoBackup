@@ -298,7 +298,6 @@ public class TelaLogi extends javax.swing.JFrame {
 
         for (UsuarioMaquina usuario : usuarios) {
 
-        
             if (usuario.getNome_usuario_maquina().equals(nomeUsuarioMaquina) && usuario.getIdentificacao_usuario().equals(identificacaoUsuario)) {
 
                 userExiste = true;
@@ -311,33 +310,35 @@ public class TelaLogi extends javax.swing.JFrame {
 
             }
 
-            Maquina maquinaSave = new Maquina();
+        }
 
-            if (userExiste == true) {
+        Maquina maquinaSave = new Maquina();
 
-                Integer fkMaquina = 0;
-                List<Maquina> maquinas = bancoLocal.query("SELECT *  FROM maquina", new BeanPropertyRowMapper<>(Maquina.class));
+        if (userExiste == true) {
 
-                for (int i = 0; i < maquinas.size(); i++) {
+            Integer fkMaquina = 0;
+            List<Maquina> maquinas = bancoLocal.query("SELECT *  FROM maquina", new BeanPropertyRowMapper<>(Maquina.class));
 
-                    if (Objects.equals(maquinas.get(i).getFk_usuario_maquina(), idUser)) {
+            for (int i = 0; i < maquinas.size(); i++) {
 
-                        fkMaquina = maquinas.get(i).getId_maquina();
-                        maquinaSave.setId_maquina(fkMaquina);
+                if (Objects.equals(maquinas.get(i).getFk_usuario_maquina(), idUser)) {
 
-                    }
+                    fkMaquina = maquinas.get(i).getId_maquina();
+                    maquinaSave.setId_maquina(fkMaquina);
 
                 }
 
-                if (Objects.equals(idUser, fkMaquina)) {
+            }
 
-                    maquinaSave.setId_maquina(fkMaquina);
-                    Sistema sistema = looca.getSistema();
-                    Processador processador = looca.getProcessador();
-                    Memoria memoria = looca.getMemoria();
-                    DiscosGroup grupoDeDiscos = looca.getGrupoDeDiscos();
+            if (idUser == fkMaquina) {
 
-                    JOptionPane.showMessageDialog(null, "Usuário logou\nBem vindo! " + nomeUsuarioMaquina);
+                maquinaSave.setId_maquina(fkMaquina);
+                Sistema sistema = looca.getSistema();
+                Processador processador = looca.getProcessador();
+                Memoria memoria = looca.getMemoria();
+                DiscosGroup grupoDeDiscos = looca.getGrupoDeDiscos();
+
+                JOptionPane.showMessageDialog(null, "Usuário logou\nBem vindo! " + nomeUsuarioMaquina);
 //                    System.out.println("--------------------");
 //                    System.out.println("Coletando dados do sistema");
 //                    System.out.println(sistema);
@@ -351,70 +352,68 @@ public class TelaLogi extends javax.swing.JFrame {
 //                    System.out.println(temperatura);
 //                    System.out.println("------------------------------");
 //                    System.out.println("Coletando dados de disco");
-                    new Timer().scheduleAtFixedRate(new TimerTask() {
-                        @Override
-                        public void run() {
+                new Timer().scheduleAtFixedRate(new TimerTask() {
+                    @Override
+                    public void run() {
 
-                            if (memoria.getEmUso() > 3.) {
+                        if (memoria.getEmUso() > 3) {
 //                            System.out.println("Uso da memoria muito alto");
-                                SlackAlert.sendMessageToSlack("Alerta! a maquina esta com o id" + processador.getId() + " do usuario " + nomeUsuarioMaquina + " Esta apresentando problemas na memoria.");
-
-                            }
-                            if (processador.getFrequencia() > 4) {
-//                            System.out.println("Processador muito usado");
-                                SlackAlert.sendMessageToSlack("Alerta! O uso da processador esta muito alto, seu computador irá travar");
-
-                            }
-                            if (memoria.getDisponivel() > 2.5) {
-//                            System.out.println("Quase zero de memoria");
-                                SlackAlert.sendMessageToSlack("Alerta! Resta pouca memoria, seu computador irá travar");
-                            }
+                            SlackAlert.sendMessageToSlack("Alerta! a maquina esta com o id" + processador.getId() + " do usuario " + nomeUsuarioMaquina + " Esta apresentando problemas na memoria.");
 
                         }
-                    }, 0, 3000);
+                        if (processador.getFrequencia() > 4) {
+//                            System.out.println("Processador muito usado");
+                            SlackAlert.sendMessageToSlack("Alerta! O uso da processador esta muito alto, seu computador irá travar");
+
+                        }
+                        if (memoria.getDisponivel() > 2.5) {
+//                            System.out.println("Quase zero de memoria");
+                            SlackAlert.sendMessageToSlack("Alerta! Resta pouca memoria, seu computador irá travar");
+                        }
+
+                    }
+                }, 0, 3000);
 
 //             função SetInterval
-                    new Timer().scheduleAtFixedRate(new TimerTask() {
-                        @Override
-                        public void run() {
+                new Timer().scheduleAtFixedRate(new TimerTask() {
+                    @Override
+                    public void run() {
 
-                            String insert = "Insert into historico_maquina values (null,?,?,?,?,?,now())";
-                            String insertAzure = "Insert into historico_maquina (sistema_operacional,memoria_em_uso,memoria_disponivel,processador_em_uso) values (?,?,?,?)";
+                        String insert = "Insert into historico_maquina values (null,?,?,?,?,?,now())";
+                        String insertAzure = "Insert into historico_maquina (sistema_operacional,memoria_em_uso,memoria_disponivel,processador_em_uso) values (?,?,?,?)";
 
-                            bancoLocal.update(insert, maquinaSave.getId_maquina(), sistema.getSistemaOperacional(), memoria.getEmUso(), memoria.getDisponivel(), processador.getUso());
-                            System.out.println("Inserindo informações no banco local");
-                            bancoAzure.update(insertAzure, sistema.getSistemaOperacional(), memoria.getEmUso(), memoria.getDisponivel(), processador.getUso());
-                            System.out.println("Inserindo informações no banco na Nuvem");
+                        bancoLocal.update(insert, maquinaSave.getId_maquina(), sistema.getSistemaOperacional(), memoria.getEmUso(), memoria.getDisponivel(), processador.getUso());
+                        System.out.println("Inserindo informações no banco local");
 
-                        }
-                    }, 0, 5000);
+                        bancoAzure.update(insertAzure, sistema.getSistemaOperacional(), memoria.getEmUso(), memoria.getDisponivel(), processador.getUso());
+                        System.out.println("Inserindo informações no banco na Nuvem");
 
-                } else {
+                    }
+                }, 0, 6000);
 
-                    Logs.escreverTexto("/home/kauan.mendes/Área de Trabalho/ProjetoPI/javaCurrentVersion/testeArquivo", "\n Falha no login!"
-                            + "\n Data e hora: ");
-                    Processador processador = looca.getProcessador();
-                    Memoria memoria = looca.getMemoria();
-                    DiscosGroup grupoDeDiscos = looca.getGrupoDeDiscos();
-                    JOptionPane.showMessageDialog(this, "Usuario não tem maquina. \n Cadastramos essa no banco  \nAperte no botão novamente para rodar.");
+            } else {
 
-                    String insertMaquina = "insert into maquina (fk_empresa,fk_usuario_maquina,isActivade,codigo_patrimonio,cpu_detalhe,ram_detalhe,disco_detalhe) values (1,?,?,?,?,?,?)";
-                    bancoLocal.update(insertMaquina, idUser, "ativo", processador.getId(), processador.getNumeroCpusFisicas(), memoria.getTotal(), grupoDeDiscos.getTamanhoTotal());
+                Logs.escreverTexto("/home/kauan.mendes/Área de Trabalho/ProjetoPI/javaCurrentVersion/testeArquivo", "\n Falha no login!"
+                        + "\n Data e hora: ");
+                Processador processador = looca.getProcessador();
+                Memoria memoria = looca.getMemoria();
+                DiscosGroup grupoDeDiscos = looca.getGrupoDeDiscos();
+                JOptionPane.showMessageDialog(this, "Usuario não tem maquina. \n Cadastramos essa no banco  \nAperte no botão novamente para rodar.");
 
-                    String insertAzure = "Insert into maquina (fk_empresa,fk_usuario_maquina, isActivade,codigo_patrimonio,cpu_detalhe,ram_detalhe,disco_detalhe) values (1,1,?,?,?,?,?)";
-                    bancoAzure.update(insertAzure, "ativo", processador.getId(), processador.getNumeroCpusFisicas(), memoria.getTotal(), grupoDeDiscos.getTamanhoTotal());
+                String insertMaquina = "insert into maquina (fk_empresa,fk_usuario_maquina,isActivade,codigo_patrimonio,cpu_detalhe,ram_detalhe,disco_detalhe) values (1,?,?,?,?,?,?)";
+                bancoLocal.update(insertMaquina, idUser, "ativo", processador.getId(), processador.getNumeroCpusFisicas(), memoria.getTotal(), grupoDeDiscos.getTamanhoTotal());
 
-                }
-            } 
-            else {
+                String insertAzure = "Insert into maquina (fk_empresa,fk_usuario_maquina, isActivade,codigo_patrimonio,cpu_detalhe,ram_detalhe,disco_detalhe) values (1,1,?,?,?,?,?)";
+                bancoAzure.update(insertAzure, "ativo", processador.getId(), processador.getNumeroCpusFisicas(), memoria.getTotal(), grupoDeDiscos.getTamanhoTotal());
 
-                JOptionPane.showMessageDialog(this, "Usuário não encontrado\nVerifique seus dados e tente novamente ");
             }
+        } else {
 
+            JOptionPane.showMessageDialog(this, "Usuário não encontrado\nVerifique seus dados e tente novamente ");
+        }
 
     }//GEN-LAST:event_btnLoginActionPerformed
 
-    }
 
     private void btnLoginMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoginMouseEntered
         btnLogin.setBackground(new java.awt.Color(39, 41, 50));
